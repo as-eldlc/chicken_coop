@@ -103,13 +103,11 @@ void printState()
   Serial.print(":");
   Serial.print(clock.second, DEC);
   Serial.print("  ");
-  Serial.print(clock.month, DEC);
-  Serial.print("/");
   Serial.print(clock.dayOfMonth, DEC);
   Serial.print("/");
+  Serial.print(clock.month, DEC);
+  Serial.print("/");
   Serial.print(clock.year + 2000, DEC);
-  Serial.print(" ");
-  Serial.print(clock.dayOfMonth);
   Serial.print(" - ");
   switch (clock.dayOfWeek)// Friendly printout the weekday
   {

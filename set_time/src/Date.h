@@ -1,5 +1,5 @@
 #define HOUR 17
-#define MINUTE 17
+#define MINUTE 38
 #define YEAR 2018
 #define MONTH 3
 #define DAY 27
