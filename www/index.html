@@ -51,12 +51,11 @@
     <h3 class="header" id="state">Etat</h3>
     <div class="row">
         <div class="col-12">
-            <code id="state">
+            <code id="state_txt">
 
             </code>
         </div>
     </div>
-
 
 
     <a href="#btt" class="cd-top">Top</a>
@@ -79,12 +78,13 @@
 
 <script type="text/javascript">
     function update_state() {
-        console.log("GET STATE");
-        $.get("http://" + domain + "/coop/get_state.php", function(data){
-            $("#state").html(data);
+        $.get("http://" + domain + "/coop/get_state.php", function (data) {
+            console.log(data);
+            $("#state_txt").html(data);
         })
     }
-    var domain;
+
+    var domain = "";
     $(function () {
         domain = window.location.hostname;
 
