@@ -15,7 +15,7 @@ TOGGLE_LED = 15
 def change_gpio(n):
     GPIO.setup(n, GPIO.OUT, initial=GPIO.LOW)
     GPIO.output(n, GPIO.HIGH)
-    time.sleep(2)
+    time.sleep(1)
     GPIO.output(n, GPIO.LOW)
 
 
