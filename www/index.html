@@ -60,9 +60,9 @@
     <h3 class="header" id="state">Actions</h3>
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-primary" id="close_door">Forcer fermeture porte</a>
-            <a class="btn btn-primary" id="open_door">Forcer ouverture porte</a>
-            <a class="btn btn-primary" id="open_door">Forcer ouverture porte</a>
+            <a href="#" class="btn btn-primary" class="action_button" data-action="CLOSE">Forcer fermeture porte</a>
+            <a href="#" class="btn btn-primary" class="action_button" data-action="OPEN">Forcer ouverture porte</a>
+            <a href="#" class="btn btn-primary" class="action_button" data-action="LED">Allumer/eteindre les LED</a>
         </div>
     </div>
 
@@ -99,6 +99,14 @@
 
         $("#cam_iframe").html("<iframe src=\"http://" + domain + ":8081\" width=\"650\" height=\"490\"></iframe>");
         t = setInterval(update_state, 2000);
+
+        $(".action_button").click(function (e) {
+            e.preventDefault();
+            var a = $(e.target).attr("data-action");
+            $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
+                console.log("OK " + a);
+            });
+        })
     });
 </script>
 
