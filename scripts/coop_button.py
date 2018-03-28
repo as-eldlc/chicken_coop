@@ -12,6 +12,8 @@ OPEN_DOOR = 11
 CLOSE_DOOR = 13
 TOGGLE_LED = 15
 
+GPIO.setwarnings(False)
+
 
 def change_gpio(n):
     GPIO.setup(n, GPIO.OUT, initial=GPIO.LOW)
@@ -37,3 +39,4 @@ if __name__ == "__main__":
             print("unknown command")
     else:
         print("Missing parameter")
+    GPIO.cleanup()
