@@ -7,13 +7,13 @@ import RPi.GPIO as GPIO
 import time
 import sys
 
-OPEN_DOOR = 17
-CLOSE_DOOR = 27
-TOGGLE_LED = 22
+OPEN_DOOR = 11
+CLOSE_DOOR = 13
+TOGGLE_LED = 15
 
 
 def change_gpio(n):
-    GPIO.setup(n, GPIO.OUT)
+    GPIO.setup(n, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
     GPIO.output(n, GPIO.HIGH)
     time.sleep(2)
     GPIO.output(n, GPIO.LOW)
