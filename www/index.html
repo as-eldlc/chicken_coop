@@ -86,7 +86,6 @@
 <script type="text/javascript">
     function update_state() {
         $.get("http://" + domain + "/coop/get_state.php", function (data) {
-            console.log(data);
             $("#state_txt").html(data);
         })
     }
@@ -101,7 +100,6 @@
         $(".action_button").click(function (e) {
             e.preventDefault();
             var a = $(e.target).attr("data-action");
-            console.log("ACTION " + a);
             $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
                 console.log("OK " + a);
             });
