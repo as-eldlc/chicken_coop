@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <title>Poulallier de la grotte // Live streaming</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#home">Poulallier Grotte</a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#cam">Caméra</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#state">Etat</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1 class="header" id="home">Poulallier connecté de la Grotte 2018</h1>
+
+    <h3 class="header" id="cam">Live stream</h3>
+
+    <div class="row">
+
+        <div class="col-8 offset-2">
+            <iframe src="http://10.96.0.1:8081" width="650" height="490"></iframe>
+        </div>
+    </div>
+
+    <h3 class="header" id="state">Etat</h3>
+    <div class="row">
+        <div class="col-12">
+            <code id="state">
+
+            </code>
+        </div>
+    </div>
+
+
+
+    <a href="#btt" class="cd-top">Top</a>
+</div> <!-- /container -->
+
+<footer class="footer text-muted">
+    <div class="container">
+        <p>License <a rel="license" href="https://github.com/as-eldlc/chicken_coop/blob/master/LICENSE" target="_blank">GPL</a>.
+    </div>
+</footer>
+
+<!-- Libraries -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/moment-with-locales.js"></script>
+<script src="js/main_backtotop.js"></script>
+
+<script type="text/javascript">
+    function update_state() {
+        $.get("http://10.96.0.1/get_state.php", function(data){
+            $("#state").html(data);
+        })
+    }
+    $(function () {
+        var t=setInterval(update_state,1000);
+
+    })
+</script>
+
+</body>
+
+</html>
