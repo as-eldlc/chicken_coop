@@ -27,6 +27,10 @@
 
 #define POTENTIOMETER_PIN 2
 
+#define PI_BUTTON1_PIN 11
+#define PI_BUTTON2_PIN 12
+#define PI_BUTTON3_PIN 13
+
 #define STATE_DOOR_IDLE 0
 #define STATE_DOOR_OPEN 1
 #define STATE_DOOR_CLOSE 2
@@ -83,12 +87,9 @@ void setup()
   pinMode(STOP_TOP_PIN, INPUT);
   pinMode(STOP_DOWN_PIN, INPUT);
 
-  if (false) {
-    clock.fillByYMD(2013, 1, 19); //Jan 19,2013
-    clock.fillByHMS(15, 28, 30); //15:28 30"
-    clock.fillDayOfWeek(SAT);//Saturday
-    clock.setTime();//write time to the clock chip
-  }
+  pinMode(PI_BUTTON1_PIN, INPUT);
+  pinMode(PI_BUTTON2_PIN, INPUT);
+  pinMode(PI_BUTTON3_PIN, INPUT);
 
 }
 
@@ -112,25 +113,25 @@ void printState()
   switch (clock.dayOfWeek)// Friendly printout the weekday
   {
     case MON:
-      Serial.print("MON");
+      Serial.print("MONDAY");
       break;
     case TUE:
-      Serial.print("TUE");
+      Serial.print("TUESDAY");
       break;
     case WED:
-      Serial.print("WED");
+      Serial.print("WEDNESDAY");
       break;
     case THU:
-      Serial.print("THU");
+      Serial.print("THURSDAY");
       break;
     case FRI:
-      Serial.print("FRI");
+      Serial.print("FRIDAY");
       break;
     case SAT:
-      Serial.print("SAT");
+      Serial.print("SATURDAY");
       break;
     case SUN:
-      Serial.print("SUN");
+      Serial.print("SUNDAY");
       break;
   }
   Serial.print(" // DOOR: ");
@@ -201,17 +202,17 @@ void loop()
   led_intensity = map(val, 0, 1024, 0, 255);
 
   // Buttons
-  if (digitalRead(BUTTON_TOP_PIN) == HIGH) {
+  if (digitalRead(BUTTON_TOP_PIN) == HIGH || digitalRead(PI_BUTTON1_PIN) == HIGH) {
     Serial.println("TOP");
     if (door_state != STATE_DOOR_OPENED) {
       door_state = STATE_DOOR_OPEN;
     }
-  } else if (digitalRead(BUTTON_DOWN_PIN) == HIGH) {
+  } else if (digitalRead(BUTTON_DOWN_PIN) == HIGH || digitalRead(PI_BUTTON2_PIN) == HIGH) {
     Serial.println("DOWN");
     if (door_state != STATE_DOOR_CLOSED) {
       door_state = STATE_DOOR_CLOSE;
     }
-  } else if (digitalRead(BUTTON_LEFT_PIN) == HIGH) {
+  } else if (digitalRead(BUTTON_LEFT_PIN) == HIGH || digitalRead(PI_BUTTON3_PIN) == HIGH) {
     Serial.println("LEFT");
     if (led_state == STATE_LED_OFF) {
       led_state = STATE_LED_ON;
