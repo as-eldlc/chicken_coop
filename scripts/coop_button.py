@@ -18,7 +18,7 @@ GPIO.setwarnings(False)
 def change_gpio(n):
     GPIO.setup(n, GPIO.OUT, initial=GPIO.LOW)
     GPIO.output(n, GPIO.HIGH)
-    time.sleep(0.5)
+    time.sleep(0.4)
     GPIO.output(n, GPIO.LOW)
 
 
