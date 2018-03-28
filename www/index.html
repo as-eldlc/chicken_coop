@@ -102,7 +102,9 @@
 
         $(".action_button").click(function (e) {
             e.preventDefault();
+            console.log("CLICK");
             var a = $(e.target).attr("data-action");
+            console.log(a);
             $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
                 console.log("OK " + a);
             });
