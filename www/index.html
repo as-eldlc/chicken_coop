@@ -43,8 +43,8 @@
 
     <div class="row">
 
-        <div class="col-8 offset-2">
-            <iframe src="http://10.96.0.1:8081" width="650" height="490"></iframe>
+        <div class="col-8 offset-2" id="cam_iframe">
+
         </div>
     </div>
 
@@ -79,14 +79,18 @@
 
 <script type="text/javascript">
     function update_state() {
-        $.get("http://10.96.0.1/get_state.php", function(data){
+        console.log("GET STATE");
+        $.get("http://" + domain + "/coop/get_state.php", function(data){
             $("#state").html(data);
         })
     }
+    var domain;
     $(function () {
-        var t=setInterval(update_state,1000);
+        domain = window.location.hostname;
 
-    })
+        $("#cam_iframe").html("<iframe src=\"http://" + domain + ":8081\" width=\"650\" height=\"490\"></iframe>");
+        t = setInterval(update_state, 2000);
+    });
 </script>
 
 </body>
