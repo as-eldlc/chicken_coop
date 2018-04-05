@@ -51,6 +51,9 @@ uint32_t black = strip.Color(0, 0, 0);
 uint32_t led_color = strip.Color(LED_INTENSITY, LED_INTENSITY, LED_INTENSITY);
 bool is_servo_attached = false;
 unsigned int cpt = 0;
+String err = String("");
+int current_time = 0;
+int month_part = 0;
 
 // opening/closing hours
 int sunrise[12] = {830, 800, 730, 700, 600, 600, 600, 630, 700, 800, 800, 830};
@@ -152,6 +155,10 @@ void printState()
         Serial.print("ON ");
         break;
     }
+
+    Serial.print(" // STATUS: ");
+    Serial.print(err);
+    Serial.println("");
 }
 
 void motor_step(int way) {
@@ -215,32 +222,38 @@ void loop()
         }
     }
 
+    current_time = clock.hour * 100 + clock.minute;
+    month_part = (int)(clock.dayOfMonth / 10.5);
     // Check if we need to open/close the door
-    if (clock.hour * 100 + clock.minute == sunrise[clock.month - 1]) {
+    if (current_time == sunrise[clock.month - 1]) {
         if (door_state != STATE_DOOR_OPENED && door_state != STATE_DOOR_OPEN) {
             door_state = STATE_DOOR_OPEN;
         }
     }
 
-    if (clock.hour * 100 + clock.minute == sunset[(int)(clock.dayOfMonth / 10.5)][clock.month - 1]) {
+    if (current_time == sunset[month_part][clock.month - 1]) {
         if (door_state != STATE_DOOR_CLOSED && door_state != STATE_DOOR_CLOSED) {
             door_state = STATE_DOOR_CLOSE;
         }
     }
 
     // Check if we have a problem...
-    if (clock.hour * 100 + clock.minute - 5 == sunrise[clock.month - 1]) {
-        if (door_state != STATE_DOOR_OPENED) {
-            // We have a problem !
+    if (current_time - 5 > sunrise[clock.month - 1] && current_time + 5 < sunset[month_part][clock.month - 1]) {
+        if (door_state != STATE_DOOR_OPENED){
+            err = String("PB DOOR NOT OPENED");
+        } else {
+            err = String("OK");
         }
-    }
-
-    if (clock.hour * 100 + clock.minute - 5 == sunset[(int)(clock.dayOfMonth / 10.5)][clock.month - 1]) {
-        if (door_state != STATE_DOOR_CLOSED) {
-            // We have a problem !
+    } else if (current_time + 5 < sunrise[clock.month - 1] && current_time + 5 > sunset[month_part][clock.month - 1]) {
+        if (door_state != STATE_DOOR_CLOSED){
+            err = String("PB DOOR NOT CLOSED");
+        } else {
+            err = String("OK");
         }
+    } else {
+        err = String("?");
     }
-
+    
     // FSM actions
     switch (door_state) {
         case STATE_DOOR_IDLE:
@@ -278,12 +291,13 @@ void loop()
     }
     strip.show();
 
+    // display state on serial port
     cpt ++;
     if (cpt > 2){
         printState();
         cpt = 0;
     }
-    // Run roughly every second.
+    // Run roughly every 500ms.
     delay(500);
 
 }

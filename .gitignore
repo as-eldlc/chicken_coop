@@ -3,3 +3,4 @@ __pycache__
 *.pyc
 Date.h
 .DS_Store
+*.ino.cpp
