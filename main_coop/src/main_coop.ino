@@ -28,8 +28,8 @@
 #define POTENTIOMETER_PIN 2
 
 #define PI_BUTTON1_PIN 11
-#define PI_BUTTON2_PIN 12
-#define PI_BUTTON3_PIN 13
+#define PI_BUTTON2_PIN 11
+#define PI_BUTTON3_PIN 11
 
 #define STATE_DOOR_IDLE 0
 #define STATE_DOOR_OPEN 1
@@ -230,14 +230,18 @@ void loop()
   }
 
   // Stops
-  if (digitalRead(BUTTON_LEFT_PIN) == HIGH) {
+  if (digitalRead(STOP_TOP_PIN) == HIGH) {
     Serial.println("STOP DOWN");
-    door_state = STATE_DOOR_CLOSED;
+    if (door_state == STATE_DOOR_CLOSE){
+        door_state = STATE_DOOR_CLOSED;
+    }
   }
 
-  if (digitalRead(BUTTON_RIGHT_PIN) == HIGH) {
-    Serial.println("STOP RIGHT");
-    door_state = STATE_DOOR_OPENED;
+  if (digitalRead(STOP_DOWN_PIN) == HIGH) {
+    Serial.println("STOP TOP");
+    if (door_state == STATE_DOOR_OPEN){
+        door_state = STATE_DOOR_OPENED;
+    }
   }
 
   // Check if we need to open/close the door
