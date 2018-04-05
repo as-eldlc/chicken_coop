@@ -10,6 +10,8 @@ from logging.handlers import RotatingFileHandler
 import serial
 import sys
 
+SERIAL_PORT = "/dev/ttyACM0"
+
 logger = logging.getLogger('chicken_coop')
 hdlr = RotatingFileHandler('/tmp/coop_serial.log', mode='a', maxBytes=1024 * 1024, backupCount=10, encoding="UTF-8")
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -28,7 +30,7 @@ if __name__ == "__main__":
         logger.info("Open serial port")
         message = ""
         try:
-            with serial.Serial("/dev/ttyUSB0", 115200, timeout=0) as ser:
+            with serial.Serial(SERIAL_PORT, 115200, timeout=0) as ser:
                 logger.info("Serial port openned")
                 while True:
                     try:
@@ -53,4 +55,3 @@ if __name__ == "__main__":
             logger.error(str(e))
             logger.info("Try again in 5 seconds")
             time.sleep(5)
-
