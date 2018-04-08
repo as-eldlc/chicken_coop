@@ -17,9 +17,9 @@
 #define STRIP_PIN 10
 #define SERVO_PIN 9
 
-#define BUTTON_TOP_PIN 2
-#define BUTTON_DOWN_PIN 3
-#define BUTTON_LED_PIN 4
+#define BUTTON_TOP_PIN 3
+#define BUTTON_DOWN_PIN 4
+#define BUTTON_LED_PIN 5
 
 #define STOP_TOP_PIN 6
 #define STOP_DOWN_PIN 7
