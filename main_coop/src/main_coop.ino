@@ -37,8 +37,8 @@
 #define STATE_LED_ON 1
 #define STATE_LED_OFF 2
 
-#define TOTAL_LED 20
-#define ACTIVE_LED 10
+#define TOTAL_LED 15
+#define ACTIVE_LED 15
 
 Servo myservo;
 
