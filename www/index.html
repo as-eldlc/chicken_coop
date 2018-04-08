@@ -37,7 +37,7 @@
 
 <div class="container">
 
-    <h1 class="header" id="home">Poulallier connecté de la Grotte 2018</h1>
+    <h1 class="header" id="home">Poulailler connecté de la Grotte</h1>
 
     <div class="row">
         <div class="col-8" id="cam_iframe">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <code id="door_msg"></code>
+                    <div id="door_msg"></div>
                 </div>
             </div>
             <h3 class="header" id="led">LED</h3>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <code id="led_msg"></code>
+                    <div id="led_msg"></div>
                 </div>
             </div>
         </div>
@@ -120,15 +120,17 @@
                             $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>' +
                             '<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
                         } else {
-                            $("#door_actions").html('pas d\'action possible');
+                            $("#door_actions").html('NA');
                         }
                     } else if (e.search("LED: ") >= 0){
                         var s = e.replace("LED: ","");
                         $("#led_state").html(s);
                         if (s.search("ON") >= 0 ){
                             $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ETEINDRE</a>');
-                        } else if (s.search("IDLE") >= 0){
+                        } else if (s.search("OFF") >= 0 || s.search("IDLE") >= 0){
                             $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ALLUMER</a>');
+                        } else {
+                            $("#led_actions").html('NA');
                         }
                     }
                 });
@@ -141,9 +143,9 @@
         e.preventDefault();
         var a = $(e.target).attr("data-action");
         var b = $(e.target).attr("data-msg");
-        $("#"+b).html("en cours...");
+        $("#"+b).html('<div class="alert alert-info" role="alert">en cours...</div>');
         $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
-            $("#"+b).html("OK");
+            $("#"+b).html('<div class="alert alert-success" role="alert">OK</div>');
         });
     }
 

@@ -90,7 +90,7 @@ void setup()
 /*Function: Display time on the serial monitor*/
 void printState()
 {
-    Serial.print("RTC clock: ");
+    Serial.print("RTC: ");
     Serial.print(clock.hour, DEC);
     Serial.print(":");
     Serial.print(clock.minute, DEC);
@@ -153,17 +153,17 @@ void printState()
     Serial.print(" // LED: ");
     switch (led_state) {
         case STATE_LED_OFF:
-        Serial.print("OFF ");
+        Serial.print("OFF");
         break;
         case STATE_LED_ON:
-        Serial.print("ON ");
+        Serial.print("ON");
         break;
     }
 
     Serial.print(" // STATUS: ");
     Serial.print(err);
 
-    Serial.print(" // BUTTONS: ");
+    Serial.print(" // BTNS: ");
     Serial.print(digitalRead(BUTTON_TOP_PIN), DEC);
     Serial.print(digitalRead(BUTTON_DOWN_PIN), DEC);
     Serial.print(digitalRead(BUTTON_LED_PIN), DEC);
@@ -171,7 +171,7 @@ void printState()
     Serial.print(digitalRead(STOP_TOP_PIN), DEC);
     Serial.print(digitalRead(STOP_DOWN_PIN), DEC);
 
-    Serial.print(" // TIMING: ");
+    Serial.print(" // TIMINGS: ");
     Serial.print(clock.hour * 100 + clock.minute, DEC);
     Serial.print(" ");
     Serial.print(sunrise[clock.month - 1], DEC);
