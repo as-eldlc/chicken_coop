@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <title>Poulailler de la grotte</title>
+    <title>Poulailler connecté</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -22,7 +22,7 @@
         aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#home">Poulailler Grotte</a>
+        <a class="navbar-brand" href="#home">Poulailler connecté</a>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <!--<li class="nav-item">
@@ -67,6 +67,10 @@
                     <div id="led_msg"></div>
                 </div>
             </div>
+            <h3 class="header" id="led">Mot de passe</h3>
+            <div class="row state-row">
+                <input type="password" id="action_password">
+            </div>
         </div>
     </div>
 
@@ -84,7 +88,7 @@
 
 <footer class="footer text-muted">
     <div class="container">
-        <p>License <a rel="license" href="https://github.com/as-eldlc/chicken_coop/blob/master/LICENSE" target="_blank">GPL</a>.</p>
+        <p><a rel="license" href="https://github.com/as-eldlc/chicken_coop/" target="_blank">github</a></p>
     </div>
 </footer>
 
@@ -138,8 +142,12 @@ function hdl(e) {
     var a = $(e.target).attr("data-action");
     var b = $(e.target).attr("data-msg");
     $("#"+b).html('<div class="alert alert-info" role="alert">en cours...</div>');
-    $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
-        $("#"+b).html('<div class="alert alert-success" role="alert">OK</div>');
+    $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "&pass=" + $("#action_password").val(), function (data) {
+        if (data.search("OK") >= 0){
+            $("#"+b).html('<div class="alert alert-success" role="alert">' + data + '</div>');
+        } else {
+            $("#"+b).html('<div class="alert alert-danger" role="alert">' + data + '</div>');
+        }
     });
 }
 
