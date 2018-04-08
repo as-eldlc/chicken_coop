@@ -84,6 +84,9 @@
         </div>
     </div>
 
+    <div class="row">
+        &nbsp;
+    </div>
 
 </div> <!-- /container -->
 
@@ -112,14 +115,15 @@
                     if (e.search("DOOR: ") >= 0){
                         var s = e.replace("DOOR: ","");
                         $("#door_state").html(s);
-                        if (s == "OPENED"){
+                        if (s.search("OPENED") >= 0){
                             $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>');
-                        } else if (s == "CLOSED"){
+                        } else if (s.search("CLOSED") >= 0){
                             $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
-                        } else if (s == "IDLE"){
+                        } else if (s.search("IDLE") >= 0){
                             $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>' +
                             '<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
-
+                        } else {
+                            $("#door_actions").html('pas d\'action possible');
                         }
                     } else if (e.search("LED: ") >= 0){
                         var s = e.replace("LED: ","");
