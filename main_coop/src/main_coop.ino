@@ -162,7 +162,6 @@ void printState()
 
     Serial.print(" // STATUS: ");
     Serial.print(err);
-    Serial.println("");
 
     Serial.print(" // BUTTONS: ");
     Serial.print(digitalRead(BUTTON_TOP_PIN), DEC);
