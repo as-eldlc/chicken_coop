@@ -2,6 +2,7 @@ body {
     min-height: 75rem;
     padding-top: 4.5rem;
     background-color: #fcfcfc;
+    font-family: 'Roboto', sans-serif;
 }
 
 .footer {
@@ -15,7 +16,7 @@ nav ul a:hover {
     background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.state_row {
+.state-row {
     min-height: 75px;
     height: 75px;
 }
