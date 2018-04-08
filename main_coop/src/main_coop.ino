@@ -160,10 +160,10 @@ void printState()
         break;
     }
 
-    Serial.print(" // STATUS: ");
+    Serial.print(" // MSG: ");
     Serial.print(err);
 
-    Serial.print(" // BTNS: ");
+    Serial.print(" // BTN: ");
     Serial.print(digitalRead(BUTTON_TOP_PIN), DEC);
     Serial.print(digitalRead(BUTTON_DOWN_PIN), DEC);
     Serial.print(digitalRead(BUTTON_LED_PIN), DEC);
@@ -171,7 +171,7 @@ void printState()
     Serial.print(digitalRead(STOP_TOP_PIN), DEC);
     Serial.print(digitalRead(STOP_DOWN_PIN), DEC);
 
-    Serial.print(" // TIMINGS: ");
+    Serial.print(" // TIM: ");
     Serial.print(clock.hour * 100 + clock.minute, DEC);
     Serial.print(" ");
     Serial.print(sunrise[clock.month - 1], DEC);
