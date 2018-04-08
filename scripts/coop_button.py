@@ -36,7 +36,7 @@ if __name__ == "__main__":
         elif but == "LED":
             print("Force led toggle")
             change_gpio(TOGGLE_LED)
-        else:
+        elif but == "RESET":
             print("RESET GPIO")
             GPIO.setup(OPEN_DOOR, GPIO.OUT, initial=GPIO.LOW)
             GPIO.output(OPEN_DOOR, GPIO.LOW)
