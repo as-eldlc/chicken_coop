@@ -170,6 +170,13 @@ void printState()
     Serial.print(" ");
     Serial.print(digitalRead(STOP_TOP_PIN), DEC);
     Serial.print(digitalRead(STOP_DOWN_PIN), DEC);
+
+    Serial.print(" // TIMING: ");
+    Serial.print(clock.hour * 100 + clock.minute, DEC);
+    Serial.print(" ");
+    Serial.print(sunrise[clock.month - 1], DEC);
+    Serial.print(" ");
+    Serial.print(sunset[(int)(clock.dayOfMonth / 10.5)][clock.month - 1], DEC);
     Serial.println("");
 }
 
@@ -218,11 +225,15 @@ void loop()
 
     // Stops
     if (digitalRead(STOP_TOP_PIN) == HIGH) {
-        door_state = STATE_DOOR_OPENED;
+        if (door_state != STATE_DOOR_CLOSE){
+            door_state = STATE_DOOR_OPENED;
+        }
     }
 
     if (digitalRead(STOP_DOWN_PIN) == LOW) {
-        door_state = STATE_DOOR_CLOSED;
+        if (door_state != STATE_DOOR_OPEN){
+            door_state = STATE_DOOR_CLOSED;
+        }
     }
 
     current_time = clock.hour * 100 + clock.minute;

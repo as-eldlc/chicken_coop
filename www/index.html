@@ -48,11 +48,11 @@
                 <div class="col-4">
                     <code id="door_state"></code>
                 </div>
-                <div class="col-4">
+                <div class="col-8">
                     <div id="door_actions">
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-12">
                     <code id="door_msg"></code>
                 </div>
             </div>
@@ -61,12 +61,11 @@
                 <div class="col-4">
                     <code id="led_state"></code>
                 </div>
-                <div class="col-4">
+                <div class="col-8">
                     <div id="led_actions">
-                        <a href="#" class="btn btn-primary action_button" data-action="LED" data-msg="led_msg">Allumer/eteindre les LED</a>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-12">
                     <code id="led_msg"></code>
                 </div>
             </div>
@@ -110,7 +109,6 @@
                 $("#state_txt").html(data);
                 var res = data.split("//");
                 res.forEach(function(e){
-                    console.log(e);
                     if (e.search("DOOR: ") >= 0){
                         var s = e.replace("DOOR: ","");
                         $("#door_state").html(s);
@@ -127,6 +125,11 @@
                     } else if (e.search("LED: ") >= 0){
                         var s = e.replace("LED: ","");
                         $("#led_state").html(s);
+                        if (s.search("ON") >= 0 ){
+                            $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ETEINDRE</a>');
+                        } else if (s.search("IDLE") >= 0){
+                            $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ALLUMER</a>');
+                        }
                     }
                 });
                 reload_actions();
