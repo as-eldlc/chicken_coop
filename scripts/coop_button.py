@@ -20,6 +20,7 @@ def change_gpio(n):
     GPIO.output(n, GPIO.HIGH)
     time.sleep(0.5)
     GPIO.output(n, GPIO.LOW)
+    time.sleep(1)
 
 
 if __name__ == "__main__":
@@ -36,7 +37,13 @@ if __name__ == "__main__":
             print("Force led toggle")
             change_gpio(TOGGLE_LED)
         else:
-            print("unknown command")
+            print("RESET GPIO")
+            GPIO.setup(OPEN_DOOR, GPIO.OUT, initial=GPIO.LOW)
+            GPIO.output(OPEN_DOOR, GPIO.LOW)
+            GPIO.setup(CLOSE_DOOR, GPIO.OUT, initial=GPIO.LOW)
+            GPIO.output(CLOSE_DOOR, GPIO.LOW)
+            GPIO.setup(TOGGLE_LED, GPIO.OUT, initial=GPIO.LOW)
+            GPIO.output(TOGGLE_LED, GPIO.LOW)
     else:
         print("Missing parameter")
     GPIO.cleanup()
