@@ -48,21 +48,39 @@
         </div>
     </div>
 
+    <h3 class="header" id="door">Porte</h3>
+    <div class="row">
+        <div class="col-4">
+            <code id="door_state"></code>
+        </div>
+        <div class="col-4">
+            <div id="door_actions">
+            </div>
+        </div>
+        <div class="col-4">
+            <code id="door_msg"></code>
+        </div>
+    </div>
+    <h3 class="header" id="led">LED</h3>
+    <div class="row">
+        <div class="col-4">
+            <code id="led_state"></code>
+        </div>
+        <div class="col-4">
+            <div id="led_actions">
+                <a href="#" class="btn btn-primary action_button" data-action="LED" data-msg="led_msg">Allumer/eteindre les LED</a>
+            </div>
+        </div>
+        <div class="col-4">
+            <code id="led_msg"></code>
+        </div>
+    </div>
+
     <h3 class="header" id="state">Etat</h3>
     <div class="row">
         <div class="col-12">
             <code id="state_txt">
-
             </code>
-        </div>
-    </div>
-
-    <h3 class="header" id="state">Actions</h3>
-    <div class="row">
-        <div class="col-12">
-            <a href="#" class="btn btn-primary action_button" data-action="CLOSE">Forcer fermeture porte</a>
-            <a href="#" class="btn btn-primary action_button" data-action="OPEN">Forcer ouverture porte</a>
-            <a href="#" class="btn btn-primary action_button" data-action="LED">Allumer/eteindre les LED</a>
         </div>
     </div>
 
@@ -86,24 +104,53 @@
 <script type="text/javascript">
     function update_state() {
         $.get("http://" + domain + "/coop/get_state.php", function (data) {
-            $("#state_txt").html(data);
+            if (data.length > 10){
+                $("#state_txt").html(data);
+                var res = data.split("//");
+                res.forEach(function(e){
+                    console.log(e);
+                    if (e.search("DOOR: ") >= 0){
+                        var s = e.replace("DOOR: ","");
+                        $("#door_state").html(s);
+                        if (s == "OPENED"){
+                            $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>');
+                        } else if (s == "CLOSED"){
+                            $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
+                        } else if (s == "IDLE"){
+                            $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>' +
+                            '<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
+
+                        }
+                    } else if (e.search("LED: ") >= 0){
+                        var s = e.replace("LED: ","");
+                        $("#led_state").html(s);
+                    }
+                });
+                reload_actions();
+            }
         })
+    }
+
+    function hdl(e) {
+        e.preventDefault();
+        var a = $(e.target).attr("data-action");
+        var b = $(e.target).attr("data-msg");
+        $("#"+b).html("en cours...");
+        $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
+            $("#"+b).html("OK");
+        });
+    }
+
+    function reload_actions(){
+        $(".naction_button").click(hdl);
     }
 
     var domain = "";
     $(function () {
         domain = window.location.hostname;
-
         $("#cam_iframe").html("<iframe src=\"http://" + domain + ":8081\" width=\"650\" height=\"490\"></iframe>");
-        t = setInterval(update_state, 2000);
-
-        $(".action_button").click(function (e) {
-            e.preventDefault();
-            var a = $(e.target).attr("data-action");
-            $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
-                console.log("OK " + a);
-            });
-        })
+        t = setInterval(update_state, 1000);
+        $(".action_button").click(hdl);
     });
 </script>
 
