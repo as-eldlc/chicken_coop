@@ -246,7 +246,7 @@ void loop()
     }
 
     if (current_time == sunset[month_part][clock.month - 1]) {
-        if (door_state != STATE_DOOR_CLOSED && door_state != STATE_DOOR_CLOSED) {
+        if (door_state != STATE_DOOR_CLOSED && door_state != STATE_DOOR_CLOSE) {
             door_state = STATE_DOOR_CLOSE;
         }
     }
