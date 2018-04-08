@@ -24,7 +24,9 @@
 #define STOP_TOP_PIN 6
 #define STOP_DOWN_PIN 7
 
-#define LED_INTENSITY 2
+#define LED_INTENSITY_R 128
+#define LED_INTENSITY_G 128
+#define LED_INTENSITY_B 128
 
 #define STATE_DOOR_IDLE 0
 #define STATE_DOOR_OPEN 1
@@ -48,7 +50,7 @@ unsigned int led_state = STATE_LED_OFF;
 
 uint32_t color = 0;
 uint32_t black = strip.Color(0, 0, 0);
-uint32_t led_color = strip.Color(LED_INTENSITY, LED_INTENSITY, LED_INTENSITY);
+uint32_t led_color = strip.Color(LED_INTENSITY_R, LED_INTENSITY_G, LED_INTENSITY_B);
 bool is_servo_attached = false;
 unsigned int cpt = 0;
 String err = String("");
@@ -253,7 +255,7 @@ void loop()
     } else {
         err = String("?");
     }
-    
+
     // FSM actions
     switch (door_state) {
         case STATE_DOOR_IDLE:
