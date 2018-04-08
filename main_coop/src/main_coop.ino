@@ -191,12 +191,12 @@ void loop()
 
     // Buttons
     if (digitalRead(BUTTON_TOP_PIN) == HIGH) {
-        Serial.println("TOP");
+        Serial.println("OPEN");
         if (door_state != STATE_DOOR_OPENED) {
             door_state = STATE_DOOR_OPEN;
         }
     } else if (digitalRead(BUTTON_DOWN_PIN) == HIGH) {
-        Serial.println("DOWN");
+        Serial.println("CLOSE");
         if (door_state != STATE_DOOR_CLOSED) {
             door_state = STATE_DOOR_CLOSE;
         }
@@ -211,16 +211,16 @@ void loop()
 
     // Stops
     if (digitalRead(STOP_TOP_PIN) == HIGH) {
-        Serial.println("STOP DOWN");
-        if (door_state == STATE_DOOR_CLOSE){
-            door_state = STATE_DOOR_CLOSED;
+        Serial.println("TOP STOP");
+        if (door_state == STATE_DOOR_OPEN){
+            door_state = STATE_DOOR_OPENED;
         }
     }
 
-    if (digitalRead(STOP_DOWN_PIN) == HIGH) {
-        Serial.println("STOP TOP");
-        if (door_state == STATE_DOOR_OPEN){
-            door_state = STATE_DOOR_OPENED;
+    if (digitalRead(STOP_DOWN_PIN) == LOW) {
+        Serial.println("DOWN STOP");
+        if (door_state == STATE_DOOR_CLOSE){
+            door_state = STATE_DOOR_CLOSED;
         }
     }
 
