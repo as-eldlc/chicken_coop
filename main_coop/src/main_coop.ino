@@ -104,29 +104,31 @@ void printState()
     Serial.print(clock.year + 2000, DEC);
     Serial.print(" - ");
 
-    switch (clock.dayOfWeek)// Friendly printout the weekday
-    {
-        case MON:
-        Serial.print("MON");
-        break;
-        case TUE:
-        Serial.print("TUE");
-        break;
-        case WED:
-        Serial.print("WED");
-        break;
-        case THU:
-        Serial.print("THU");
-        break;
-        case FRI:
-        Serial.print("FRI");
-        break;
-        case SAT:
-        Serial.print("SAT");
-        break;
-        case SUN:
-        Serial.print("SUN");
-        break;
+    if (0){
+        switch (clock.dayOfWeek)// Friendly printout the weekday
+        {
+            case MON:
+            Serial.print("MON");
+            break;
+            case TUE:
+            Serial.print("TUE");
+            break;
+            case WED:
+            Serial.print("WED");
+            break;
+            case THU:
+            Serial.print("THU");
+            break;
+            case FRI:
+            Serial.print("FRI");
+            break;
+            case SAT:
+            Serial.print("SAT");
+            break;
+            case SUN:
+            Serial.print("SUN");
+            break;
+        }
     }
 
     Serial.print(" // DOOR: ");
@@ -161,6 +163,15 @@ void printState()
     Serial.print(" // STATUS: ");
     Serial.print(err);
     Serial.println("");
+
+    Serial.print(" // BUTTONS: ");
+    Serial.print(digitalRead(BUTTON_TOP_PIN), DEC);
+    Serial.print(digitalRead(BUTTON_DOWN_PIN), DEC);
+    Serial.print(digitalRead(BUTTON_LED_PIN), DEC);
+    Serial.print(" ");
+    Serial.print(digitalRead(STOP_TOP_PIN), DEC);
+    Serial.print(digitalRead(STOP_DOWN_PIN), DEC);
+    Serial.println("");
 }
 
 void motor_step(int way) {
@@ -191,17 +202,14 @@ void loop()
 
     // Buttons
     if (digitalRead(BUTTON_TOP_PIN) == HIGH) {
-        Serial.println("OPEN");
         if (door_state == STATE_DOOR_CLOSED || door_state == STATE_DOOR_IDLE) {
             door_state = STATE_DOOR_OPEN;
         }
     } else if (digitalRead(BUTTON_DOWN_PIN) == HIGH) {
-        Serial.println("CLOSE");
         if (door_state == STATE_DOOR_OPENED || door_state == STATE_DOOR_IDLE) {
             door_state = STATE_DOOR_CLOSE;
         }
     } else if (digitalRead(BUTTON_LED_PIN) == HIGH) {
-        Serial.println("LED");
         if (led_state == STATE_LED_OFF) {
             led_state = STATE_LED_ON;
         } else {
@@ -211,17 +219,11 @@ void loop()
 
     // Stops
     if (digitalRead(STOP_TOP_PIN) == HIGH) {
-        Serial.println("TOP STOP");
-        if (door_state == STATE_DOOR_OPEN){
-            door_state = STATE_DOOR_OPENED;
-        }
+        door_state = STATE_DOOR_OPENED;
     }
 
     if (digitalRead(STOP_DOWN_PIN) == LOW) {
-        Serial.println("DOWN STOP");
-        if (door_state == STATE_DOOR_CLOSE){
-            door_state = STATE_DOOR_CLOSED;
-        }
+        door_state = STATE_DOOR_CLOSED;
     }
 
     current_time = clock.hour * 100 + clock.minute;
@@ -295,7 +297,7 @@ void loop()
 
     // display state on serial port
     cpt ++;
-    if (cpt > 2){
+    if (cpt > 1){
         printState();
         cpt = 0;
     }
