@@ -40,9 +40,9 @@
     <h1 class="header" id="home">Poulailler connecté de la Grotte</h1>
 
     <div class="row">
-        <div class="col-8" id="cam_iframe">
+        <div class="col-lg-8 col-md-12 col-sm-12" id="cam_iframe">
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-md-12 col-sm-12">
             <h3 class="header" id="door">Porte</h3>
             <div class="row">
                 <div class="col-4">
@@ -130,7 +130,7 @@
                         } else if (s.search("OFF") >= 0 || s.search("IDLE") >= 0){
                             $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ALLUMER</a>');
                         } else {
-                            $("#led_actions").html('NA');
+                            $("#led_actions ").html('NA');
                         }
                     }
                 });
