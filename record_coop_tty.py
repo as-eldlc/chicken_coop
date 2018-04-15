@@ -9,6 +9,24 @@ from logging.handlers import RotatingFileHandler
 
 import serial
 import sys
+import smtplib
+from email.message import EmailMessage
+
+def send_email(message):
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login("coop.grotte", "grotte2015!")
+        msg = EmailMessage()
+        msg['From'] = "coop.grotte@gmail.com"
+        msg['To'] = "picakoch@gmail.com"
+        msg['Subject'] = "ALERTE POULAILLER"
+
+        msg.set_content("Pb au Poulailler " + message)
+        server.send_message(msg)
+        server.quit()
+    except Exception as e:
+        print(e)
 
 SERIAL_PORT = "/dev/ttyACM0"
 
@@ -19,6 +37,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.DEBUG)
 
+last_sent = datetime.now()
 if False:
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.DEBUG)
@@ -48,6 +67,9 @@ if __name__ == "__main__":
                         message = message.replace("\n", "")
                         da = datetime.now()
                         file = open("/tmp/coop_serial.txt", "w")
+                        if "PB_DOOR" in message and (da - last_sent).minutes > 30:
+                            last_sent = datetime.now()
+                            send_email(message)
                         file.write(da.strftime("%c") + ": " + message + "\n")
                         logger.info("NEW MESSAGE " + message)
                         message = ""
