@@ -19,7 +19,7 @@ def send_email(message):
         server.login("coop.grotte", "grotte2015!")
         msg = EmailMessage()
         msg['From'] = "coop.grotte@gmail.com"
-        msg['To'] = "picakoch@gmail.com"
+        msg['To'] = "picakoch@gmail.com, mazzolini.jerome@gmail.com"
         msg['Subject'] = "ALERTE POULAILLER"
 
         msg.set_content("Pb au Poulailler " + message)
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                         message = message.replace("\n", "")
                         da = datetime.now()
                         file = open("/tmp/coop_serial.txt", "w")
-                        if "PB_DOOR" in message and (da - last_sent).minutes > 30:
+                        if "PB_DOOR" in message and (da - last_sent).minutes > 60:
                             last_sent = datetime.now()
                             send_email(message)
                         file.write(da.strftime("%c") + ": " + message + "\n")
