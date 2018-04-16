@@ -39,3 +39,7 @@ nav ul a:hover {
 code {
   font-size: 100%;
 }
+
+.lastblock {
+    padding-bottom: 50px;
+}
