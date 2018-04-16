@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-python3 ./record_coop_tty.py &
+python3 /home/pi/chicken_coop/record_coop_tty.py &

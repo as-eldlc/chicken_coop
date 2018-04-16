@@ -5,9 +5,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <title>Poulallier de la grotte // Live streaming</title>
+    <title>Poulailler connecté</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -15,63 +15,80 @@
 </head>
 
 <body>
-
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarCollapse" aria-controls="navbarCollapse"
-            aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#home">Poulallier Grotte</a>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-            <!--<li class="nav-item">
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+        data-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#home">Poulailler connecté</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <!--<li class="nav-item">
                 <a class="nav-link" href="#cam">Caméra</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#state">Etat</a>
-            </li>-->
-        </ul>
-    </div>
-</nav>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#state">Etat</a>
+                </li>-->
+            </ul>
+        </div>
+    </nav>
+</header>
 
-<div class="container">
-
-    <h1 class="header" id="home">Poulallier connecté de la Grotte 2018</h1>
-
-    <h3 class="header" id="cam">Live stream</h3>
-
+<main role="main" class="container">
     <div class="row">
-
-        <div class="col-8 offset-2" id="cam_iframe">
-
+        <div class="col-lg-8 col-md-12 col-sm-12" id="cam_iframe">
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            <h3 class="header" id="door">Porte</h3>
+            <div class="row state-row">
+                <div class="col-4">
+                    <code id="door_state"></code>
+                </div>
+                <div class="col-8">
+                    <div id="door_actions">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div id="door_msg"></div>
+                </div>
+            </div>
+            <h3 class="header" id="led">LED</h3>
+            <div class="row state-row">
+                <div class="col-4">
+                    <code id="led_state"></code>
+                </div>
+                <div class="col-8">
+                    <div id="led_actions">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div id="led_msg"></div>
+                </div>
+            </div>
+            <h3 class="header" id="led">Mot de passe</h3>
+            <div class="row">
+                <input type="password" class="form-control" id="action_password">
+            </div>
         </div>
     </div>
 
-    <h3 class="header" id="state">Etat</h3>
     <div class="row">
         <div class="col-12">
             <code id="state_txt">
-
             </code>
         </div>
     </div>
 
-    <h3 class="header" id="state">Actions</h3>
     <div class="row">
-        <div class="col-12">
-            <a href="#" class="btn btn-primary action_button" data-action="CLOSE">Forcer fermeture porte</a>
-            <a href="#" class="btn btn-primary action_button" data-action="OPEN">Forcer ouverture porte</a>
-            <a href="#" class="btn btn-primary action_button" data-action="LED">Allumer/eteindre les LED</a>
-        </div>
+        &nbsp;
     </div>
-
-
-</div> <!-- /container -->
+</main>
 
 <footer class="footer text-muted">
     <div class="container">
-        <p>License <a rel="license" href="https://github.com/as-eldlc/chicken_coop/blob/master/LICENSE" target="_blank">GPL</a>.
+        <p><a rel="license" href="https://github.com/as-eldlc/chicken_coop/" target="_blank">github</a></p>
     </div>
 </footer>
 
@@ -84,29 +101,67 @@
 <script src="js/moment-with-locales.js"></script>
 
 <script type="text/javascript">
-    function update_state() {
-        $.get("http://" + domain + "/coop/get_state.php", function (data) {
+function update_state() {
+    $.get("http://" + domain + "/coop/get_state.php", function (data) {
+        if (data.length > 10){
             $("#state_txt").html(data);
-        })
-    }
-
-    var domain = "";
-    $(function () {
-        domain = window.location.hostname;
-
-        $("#cam_iframe").html("<iframe src=\"http://" + domain + ":8081\" width=\"650\" height=\"490\"></iframe>");
-        t = setInterval(update_state, 2000);
-
-        $(".action_button").click(function (e) {
-            e.preventDefault();
-            var a = $(e.target).attr("data-action");
-            $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "", function (data) {
-                console.log("OK " + a);
+            var res = data.split("//");
+            res.forEach(function(e){
+                if (e.search("DOOR: ") >= 0){
+                    var s = e.replace("DOOR: ","");
+                    $("#door_state").html(s);
+                    if (s.search("OPENED") >= 0){
+                        $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>');
+                    } else if (s.search("CLOSED") >= 0){
+                        $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
+                    } else if (s.search("IDLE") >= 0){
+                        $("#door_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="CLOSE" data-msg="door_msg">FERMER</a>' +
+                        '<a href="#" class="btn btn-primary naction_button" data-action="OPEN" data-msg="door_msg">OUVRIR</a>');
+                    } else {
+                        $("#door_actions").html('NA');
+                    }
+                } else if (e.search("LED: ") >= 0){
+                    var s = e.replace("LED: ","");
+                    $("#led_state").html(s);
+                    if (s.search("ON") >= 0 ){
+                        $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ETEINDRE</a>');
+                    } else if (s.search("OFF") >= 0 || s.search("IDLE") >= 0){
+                        $("#led_actions").html('<a href="#" class="btn btn-primary naction_button" data-action="LED" data-msg="led_msg">ALLUMER</a>');
+                    } else {
+                        $("#led_actions ").html('NA');
+                    }
+                }
             });
-        })
+            reload_actions();
+        }
+    })
+}
+
+function hdl(e) {
+    e.preventDefault();
+    var a = $(e.target).attr("data-action");
+    var b = $(e.target).attr("data-msg");
+    $("#"+b).html('<div class="alert alert-info" role="alert">en cours...</div>');
+    $.get("http://" + domain + "/coop/emulate_button.php?button=" + a + "&pass=" + $("#action_password").val(), function (data) {
+        if (data.search("OK") >= 0){
+            $("#"+b).html('<div class="alert alert-success" role="alert">' + data + '</div>');
+        } else {
+            $("#"+b).html('<div class="alert alert-danger" role="alert">' + data + '</div>');
+        }
     });
+}
+
+function reload_actions(){
+    $(".naction_button").click(hdl);
+}
+
+var domain = "";
+$(function () {
+    domain = window.location.hostname;
+    $("#cam_iframe").html("<iframe src=\"http://" + domain + ":8081\" width=\"650\" height=\"490\"></iframe>");
+    t = setInterval(update_state, 1000);
+});
 </script>
 
 </body>
-
 </html>

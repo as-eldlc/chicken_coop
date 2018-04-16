@@ -1,17 +1,41 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
-    min-height: 75rem;
-    padding-top: 4.5rem;
+    margin-bottom: 60px;
     background-color: #fcfcfc;
+    font-family: 'Roboto', sans-serif;
+}
+
+body > .container {
+  padding: 60px 15px 0;
 }
 
 .footer {
-    width: 100%;
-    height: 60px;
-    line-height: 60px; /* Vertically center the text there */
-    background-color: #f5f5f5;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
 }
 
 nav ul a:hover {
     background-color: rgba(0, 0, 0, 0) !important;
 }
 
+.state-row {
+    min-height: 110px;
+    height: 110px;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 100%;
+}
